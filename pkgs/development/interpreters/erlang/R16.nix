@@ -1,7 +1,8 @@
 { stdenv, fetchurl, perl, gnum4, ncurses, openssl
 , gnused, gawk, makeWrapper
 , odbcSupport ? false, unixODBC ? null
-, wxSupport ? false, mesa ? null, wxGTK ? null, xorg ? null }:
+, wxSupport ? false, mesa ? null, wxGTK ? null, xorg ? null
+, b01 ? false}:
 
 assert wxSupport -> mesa != null && wxGTK != null && xorg != null;
 assert odbcSupport -> unixODBC != null;
@@ -10,7 +11,7 @@ with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "erlang-" + version + "${optionalString odbcSupport "-odbc"}";
-  version = "16B03-1";
+  version = if b01 then "16B01" else "16B03-1";
 
   src = fetchurl {
     url = "http://www.erlang.org/download/otp_src_R${version}.tar.gz";
